@@ -1,0 +1,102 @@
+@startuml
+left to right direction
+
+skinparam packageStyle rectangle
+skinparam usecase {
+  BackgroundColor #F7F7F7
+  BorderColor #333333
+}
+
+actor "Utilizador" as U
+actor "Data Steward" as DS
+actor "Transition Lead" as TL
+actor "Auditor" as A
+actor "Asset Database\n(Sistema Externo)" as AD
+
+rectangle "Sistema de Intake / Inventário AMS" {
+  usecase "UC-01\nSubmeter formulário de Intake" as UC_Submit
+  usecase "UC-06\nGuardar formulário como Draft" as UC_Draft
+  usecase "UC-07\nPromover Intake para Ready / Ready to Proceed" as UC_Ready
+  usecase "UC-08\nConsultar audit trail" as UC_Audit
+
+  usecase "UC-09\nExecutar validações de qualidade" as UC_Quality
+
+  usecase "UC-02\nValidar campos obrigatórios" as UC_Required
+  usecase "UC-03\nValidar regras de Disaster Recovery" as UC_DR
+  usecase "UC-04\nValidar evidências operacionais" as UC_Evidence
+  usecase "UC-05\nVerificar unicidade do ativo" as UC_Unique
+}
+
+' Atores ligados apenas aos casos de uso que iniciam diretamente
+U --> UC_Submit
+U --> UC_Draft
+
+DS --> UC_Submit
+DS --> UC_Draft
+
+TL --> UC_Draft
+TL --> UC_Ready
+
+A --> UC_Audit
+
+' Casos principais usam o conjunto de validações
+UC_Submit .> UC_Quality : <<include>>
+UC_Ready .> UC_Quality : <<include>>
+
+' Validações de qualidade agregam as validações específicas
+UC_Quality .> UC_Required : <<include>>\nREQ-001
+UC_Quality .> UC_DR : <<include>>\nREQ-002 / REQ-003
+UC_Quality .> UC_Evidence : <<include>>\nREQ-004
+UC_Quality .> UC_Unique : <<include>>\nREQ-005 / REQ-007
+
+' Integração com sistema externo
+UC_Unique --> AD : consulta síncrona/API
+
+note right of UC_Required
+REQ-001:
+Bloquear submissão se Nome do Sistema,
+Owner ou Modelo de Suporte estiverem vazios.
+end note
+
+note right of UC_DR
+REQ-002:
+Se DR = "Sim", Data do Último Teste é obrigatória.
+
+REQ-003:
+Se DR = "Não", não deve existir data preenchida.
+end note
+
+note right of UC_Evidence
+REQ-004:
+Rejeitar evidências operacionais com data
+superior a 12 meses ou inválida.
+end note
+
+note right of UC_Unique
+REQ-005 / REQ-007:
+Validar duplicados por Serial Number,
+MAC Address, Hostname ou Nome do Sistema,
+tanto na submissão como na validação onBlur.
+end note
+
+note right of UC_Draft
+REQ-006 / REQ-008:
+Permitir guardar como Draft quando o formulário
+ainda não cumpre todos os critérios de qualidade.
+end note
+
+note right of UC_Ready
+REQ-009:
+Promover Intake para Ready / Ready to Proceed
+apenas quando todas as validações forem cumpridas.
+end note
+
+note right of UC_Audit
+NFR-001:
+O sistema deve registar automaticamente um audit trail
+imutável de alterações em campos críticos.
+
+O auditor pode consultar esse histórico.
+end note
+
+@enduml
