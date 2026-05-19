@@ -4,18 +4,16 @@ Este documento estabelece a ligação entre os Requisitos Funcionais (FR) e Não
 
 ## Mapeamento de Rastreabilidade
 
-| ID Requisito | Título do Requisito | Caso de Teste (TC) | Objetivo da Validação |
-|:---|:---|:---|:---|
-| **REQ-001** | Validação de Campos Obrigatórios | **TC-001** | Garantir que dados "órfãos" ou apenas com espaços (`trim`) são bloqueados. |
-| **REQ-002** | Condicionalidade de Teste de DR | **TC-002** | Validar se a obrigatoriedade da data é ativada dinamicamente quando DR = "Sim". |
-| **REQ-003** | Deteção de Inconsistência de DR | **TC-003** | **Gatekeeper:** Bloquear submissão se houver contradição lógica (DR="Não" com data). |
-| **REQ-005** | Validação de Caducidade de Evidências | **TC-004** | Garantir a integridade temporal (Data Freshness) rejeitando ficheiros > 365 dias. |
-| **REQ-007** | Prevenção de Duplicados (Unicidade) | **TC-005** | Validar a unicidade do Hostname contra a Asset Database no evento `onBlur`. |
-| **REQ-008** | Gestão de Estados (Rascunho) | **TC-006** | Validar o bypass intencional das regras de consistência para permitir trabalho assíncrono. |
-| **NFR-001** | Log de Auditoria | **TC-008** | Garantir que alterações em campos críticos geram registos imutáveis com UserID e Timestamp. |
-| **NFR-002** | Performance de Validação | **TC-007** | Validar se o motor de regras responde em menos de 500ms para manter a eficiência operacional. |
-
----
+| ID Requisito | Título do Requisito | Caso de Teste (TC) | 
+|:---|:---|:---|
+| **REQ-001** | Validação de Campos Obrigatórios | TC-001, TC-011, TC-014 | 
+| **REQ-002** | Condicionalidade de Teste de DR | TC-002 | 
+| **REQ-003** | Deteção de Inconsistência de DR | TC-003, TC-015, TC-018 | 
+| **REQ-005** | Validação de Caducidade de Evidências | TC-004, TC-010 | 
+| **REQ-007** | Prevenção de Duplicados (Unicidade) | TC-005, TC-019 | 
+| **REQ-008** | Gestão de Estados (Rascunho) | TC-006, TC-016 | 
+| **NFR-001** | Log de Auditoria | TC-008, TC-020 | 
+| **NFR-002** | Performance de Validação | TC-007, TC-013 |
 
 ## Cobertura por Use Cases (UC)
 
