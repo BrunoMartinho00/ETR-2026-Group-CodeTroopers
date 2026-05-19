@@ -23,3 +23,11 @@ Funcionalidade: Gatekeeper de Qualidade e Consistência de Dados (Variante 4)
     Quando o utilizador insere "CORE-ERP" no campo de nome do sistema
     Então o sistema deve exibir um erro "Ativo já existe na base de dados"
     E desativar o botão de submissão final
+
+  Cenário: Happy path — Submissão de inventário com dados consistentes e completos
+    Dado que o utilizador preencheu os campos obrigatórios ("Nome do Sistema", "Owner")
+    E o utilizador selecionou "Disaster Recovery = Sim" e forneceu uma "Data do Último Teste" válida
+    E o nome do sistema não existe atualmente na Base de Dados de Ativos
+    Quando o utilizador clica em "Submeter Final"
+    Então o sistema deve validar todas as regras de consistência com sucesso
+    E o registo deve ser guardado e transitar para o estado "Ready"
