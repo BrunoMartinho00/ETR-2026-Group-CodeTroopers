@@ -3,8 +3,6 @@ Feature: Gatekeeper de Qualidade e Consistência de Dados (Variante 4)
   Quero garantir que todos os dados do inventário são logicamente consistentes e únicos
   Para que a CMDB permaneça como uma "fonte da verdade" confiável.
 
-  # Links de Requisitos: REQ-003, REQ-007, REQ-008
-
   Cenário: Prevenir informações contraditórias de Disaster Recovery
     Given que o utilizador seleciona "Disaster Recovery = Não"
     And o utilizador tenta fornecer uma "Data do Último Teste"
