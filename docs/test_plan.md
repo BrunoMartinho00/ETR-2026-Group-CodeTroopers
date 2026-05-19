@@ -29,6 +29,7 @@
 - **Scenarios:** - Prevenir informações contraditórias de Disaster Recovery.
     - Permitir progresso parcial através do modo Rascunho (Draft).
     - Detetar nome de ativo duplicado.
+    - Happy path — Submissão de inventário com dados consistentes e completos.
 - **Links to REQs:** REQ-003, REQ-008, REQ-007.
 
 ## 5) Coverage goals
