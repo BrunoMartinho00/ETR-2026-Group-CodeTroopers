@@ -10,7 +10,7 @@
 | **REQ-006** | Identificação de Owner | **AC-1:** Validar formato de e-mail corporativo.<br>**AC-2:** Rejeitar e-mails inexistentes no diretório (AD). | **TC-008:** Auditoria de Alterações Críticas (Validação de Owner) |
 | **REQ-007** | Unicidade de Hostname | **AC-1:** Consulta API via `GET` no evento `onBlur`.<br>**AC-2:** Desativar botão se retornar `409 Conflict`. | **TC-005:** Unicidade de Hostname (onBlur)<br>**SCEN-003:** Detetar nome de ativo duplicado através da Base de Dados |
 | **REQ-008** | Gestão de Estados (Draft) | **AC-1:** Ignorar validações lógicas ao guardar rascunho.<br>**AC-2:** Persistir dados com a flag `is_draft=True`. | **TC-006:** Gravação de Rascunho com Dados em Falta<br>**SCEN-002:** Permitir progresso parcial através do modo Rascunho (Draft) |
-| **REQ-009** | Transição para "Ready" | **AC-1:** Exigir 0 erros lógicos para transição.<br>**AC-2:** Forçar reexecução total do motor na submissão. | **TC-003:** (Reutilizado para validar bloqueio de transição)<br>**TC-009:** Fluxo completo de transição para "Ready" |
+| **REQ-009** | Transição para "Ready" | **AC-1:** Exigir 0 erros lógicos para transição.<br>**AC-2:** Forçar reexecução total do motor na submissão. | **TC-002:** Validação condicional de DR ativa (Happy Path)<br>**SCEN-004: Happy path — Submissão de inventário com dados consistentes e completos |
 | **NFR-001** | Log de Auditoria | **AC-1:** Alterações a campos críticos geram log.<br>**AC-2:** Registo inclui UserID e Timestamp. | **TC-008:** Auditoria de Alterações Críticas (Log imutável) |
 | **NFR-002** | Performance (Variante 4) | **AC-1:** Processamento de regras abaixo de 500ms.<br>**AC-2:** Feedback visual em menos de 1s. |  **TC-007:** Performance do Motor de Regras |
 --
