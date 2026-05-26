@@ -1,26 +1,26 @@
-# BDD Automation Report — Lab 13
+# Relatorio de Automacao BDD — Lab 13
 
-## Tool used
-- BDD tool: Behave
-- Language/stack: Python
-- Feature syntax: Gherkin
+## Ferramenta usada
+- Ferramenta BDD: Behave
+- Linguagem/stack: Python
+- Sintaxe da feature: Gherkin
 
-## How to run
-- Command:
+## Como executar
+- Comando:
   - `python -m behave bdd/features/lab13.feature`
 
-## Execution results
-- Date: 2026-05-26
-- Feature files executed: 1
-- Scenarios executed: 6
-- Passed: 6
-- Failed: 0
-- Steps executed: 28
-- Steps passed: 28
-- Steps failed: 0
+## Resultados de execucao
+- Data: 2026-05-26
+- Ficheiros de feature executados: 1
+- Cenarios executados: 6
+- Passaram: 6
+- Falharam: 0
+- Steps executados: 28
+- Steps que passaram: 28
+- Steps que falharam: 0
 
-## Evidence
-Execution summary:
+## Evidencia
+Resumo da execucao:
 
 ```text
 1 feature passed, 0 failed, 0 skipped
@@ -29,15 +29,15 @@ Execution summary:
 Took 0min 0.028s
 ```
 
-## Notes
-- What worked well:
-  - The BDD scenarios were automated using Behave.
-  - The scenarios call the existing Python validation logic from `src/validations.py`.
-  - The suite covers happy path, negative path, alternative flow, and boundary behavior.
+## Notas
+- O que funcionou bem:
+  - Os cenarios BDD foram automatizados com Behave.
+  - Os cenarios chamam a logica Python existente em `src/validations.py`.
+  - A suite cobre happy path, negative path, alternative flow e boundary behavior.
 
-- What failed and why:
-  - No failures were observed during execution.
+- O que falhou e por que motivo:
+  - Nao foram observadas falhas durante a execucao.
 
-- Next steps:
-  - Extend BDD coverage to additional workflows if the system grows.
-  - Add integration or UI-level BDD only if the UI becomes stable enough for reliable automation.
+- Proximos passos:
+  - Alargar a cobertura BDD a workflows adicionais caso o sistema cresca.
+  - Adicionar BDD de integracao ou UI apenas se a interface se tornar suficientemente estavel para automacao fiavel.

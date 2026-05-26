@@ -1,34 +1,34 @@
-# Test Execution — Lab 12
+# Execucao de Testes — Lab 12
 
 ## Stack
-- Language: Python
-- Test framework: PyTest
-- Version requirements:
+- Linguagem: Python
+- Framework de testes: PyTest
+- Requisitos de versao:
   - Python 3.10.11
   - PyTest 9.0.3
 
 ## Setup
-1. Open a terminal in the repository root.
-2. Install PyTest:
+1. Abrir um terminal na raiz do repositorio.
+2. Instalar PyTest:
    - `python -m pip install pytest`
-3. No environment variables are required.
+3. Nao sao necessarias variaveis de ambiente.
 
-## Run all unit tests
-- Command:
+## Executar todos os testes unitarios
+- Comando:
   - `python -m pytest tests/unit -q`
 
-## Run a single test file
-- Command:
+## Executar um ficheiro de teste
+- Comando:
   - `python -m pytest tests/unit/test_validations.py -q`
 
-## Run a single test
-- Command:
+## Executar um teste especifico
+- Comando:
   - `python -m pytest tests/unit/test_validations.py::test_evidence_365_days_old_is_accepted -q`
 
-## Notes
-- Known limitations:
-  - These tests cover pure validation/business rules only.
-  - UI, database, API, and external service behavior are outside the scope of this unit test suite.
-- Troubleshooting tips:
-  - If PyTest is missing, run `python -m pip install pytest`.
-  - Run commands from the repository root so imports from `src` resolve correctly.
+## Notas
+- Limitacoes conhecidas:
+  - Estes testes cobrem apenas regras puras de validacao/negocio.
+  - Interface grafica, base de dados, API e servicos externos estao fora do escopo desta suite de testes unitarios.
+- Dicas de troubleshooting:
+  - Se o PyTest nao estiver instalado, executar `python -m pip install pytest`.
+  - Executar os comandos a partir da raiz do repositorio para que os imports de `src` sejam resolvidos corretamente.
