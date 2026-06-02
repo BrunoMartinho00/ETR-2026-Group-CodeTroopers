@@ -71,7 +71,7 @@ AC usado:
 
 - `AC-2`: bloquear a transicao para `Ready` quando o hostname ja existe
 
-## Testes escritos primeiro
+## Testes escritos primeiro (Backend Unitário)
 
 Os testes foram adicionados em:
 
@@ -179,12 +179,36 @@ A regra aplicada foi:
 Do not add features. Implement only what is necessary to satisfy these tests.
 ```
 
-Foram rejeitadas funcionalidades fora do escopo:
+Foram rejeitadas funcionalidades fora do escopo no ciclo inicial de backend:
 
-- alteracoes UI desnecessarias durante o primeiro ciclo
-- Selenium
+- alteracoes UI desnecessarias durante o primeiro ciclo puro de TDD
 - integracoes reais com APIs externas
 - Active Directory real
+
+## Automação de Interface (UI) com Selenium
+
+Para complementar os testes unitários gerados, foi decidido criar testes *End-to-End (E2E)* com **Selenium** para provar que a interface gerada via Vibe Coding atua como um verdadeiro "Gatekeeper".
+
+O script interage com os componentes complexos de UI (Radix/React) e valida as mensagens de erro em tempo real.
+
+O ficheiro de testes E2E encontra-se em:
+```text
+tests/unit/tests_selenium.py
+```
+
+Cenários de UI programados:
+1. **Happy Path:** Preenchimento de 100% dos campos e validação do "Toast" de sucesso.
+2. **Negative Path 1:** Injeção de erro de URL (`http://`) e verificação do bloqueio visual.
+3. **Negative Path 2:** Injeção de erro de Domínio (URL incompleto) e verificação de bloqueio.
+4. **Negative Path 3:** Injeção de email pessoal (`@gmail.com`) provando a aplicação da regra de email institucional.
+
+### Como executar os testes UI (Selenium)
+Com o ambiente virtual ativado (`source venv/bin/activate`), execute na raiz do projeto:
+
+```bash
+pytest tests/unit/tests_selenium.py -v -s
+```
+*(As flags `-v` e `-s` servem para detalhar o output e exibir os passos em tempo real na consola).*
 
 ## Alinhamento com o frontend real
 
@@ -238,6 +262,7 @@ A evidencia oficial do Lab 11 esta em:
 docs/test_first_log.md
 bdd/features/lab11.feature
 tests/unit/test_validations.py
+tests/unit/tests_selenium.py
 src/validations.py
 ```
 
@@ -249,22 +274,23 @@ src/test/TC011-dashboard-url.test.tsx
 
 ## Como explicar o Lab
 
-Neste lab, escolhemos tres regras pequenas e testaveis: URL HTTPS, email corporativo e hostname duplicado.
+Neste lab, escolhemos tres regras pequenas e testaveis (variante de Qualidade de Dados): URL HTTPS, email corporativo e hostname duplicado.
 
-Primeiro escrevemos os testes e confirmamos que falhavam porque as funcoes ainda nao existiam. Depois implementamos apenas o minimo necessario para os testes passarem. Por fim, limpamos o codigo e executamos novamente a suite.
+Primeiro escrevemos os testes PyTest puramente em código (TDD) e confirmamos que falhavam porque as funcoes ainda nao existiam. Depois implementamos apenas o minimo necessario para os testes passarem.
 
-Tambem criamos cenarios BDD para documentar o comportamento esperado.
+Em paralelo à camada de backend, implementámos testes automáticos de interface gráfica usando o **Selenium**. Estes testes provam ativamente que o protótipo gerado por IA bloqueia inputs incorretos na interface (como emails `@gmail.com` ou links `http://`), respeitando as regras estabelecidas pelo nosso Test-First Vibe Coding.
 
-Depois ligamos o exercicio ao frontend real. Verificamos que duas regras ja existiam, adicionamos a regra de URL que faltava e executamos os testes da interface.
+Tambem criamos cenarios BDD para documentar o comportamento esperado e garantimos o alinhamento total do protótipo final (Frontend).
 
 ## Resultado final
 
 O Lab 11 ficou com:
 
 - 3 requisitos selecionados
-- 8 testes test-first
-- 3 happy paths
-- 4 testes negativos
+- 8 testes test-first (Backend Unitário)
+- 4 testes de Automação de Interface (Selenium E2E)
+- 4 happy paths (total)
+- 7 testes negativos (total)
 - 1 boundary test
 - 1 feature BDD
 - 3 cenarios BDD
@@ -278,4 +304,3 @@ O Lab 11 ficou com:
 - O prototipo usa mocks e armazenamento local, nao uma API ou base de dados real.
 - A integracao com Active Directory continua fora do escopo.
 - O site publico depende do deploy da plataforma Lovable depois do push para GitHub.
-
