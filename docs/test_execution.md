@@ -20,12 +20,14 @@
 ## Executar um ficheiro de teste
 - Comando:
   - `python -m pytest tests/unit/test_validations.py -q`
+  - Este ficheiro contem os 11 testes associados ao Lab 12: 9 do escopo selecionado e 2 testes adicionais de regressao.
 
 ## Executar um teste especifico
 - Comando:
   - `python -m pytest tests/unit/test_validations.py::test_evidence_365_days_old_is_accepted -q`
 
 ## Notas
+- A suite completa tambem inclui os 8 testes test-first criados no Lab 11 em `tests/unit/test_lab11_validations.py`.
 - Limitacoes conhecidas:
   - Estes testes cobrem apenas regras puras de validacao/negocio.
   - Interface grafica, base de dados, API e servicos externos estao fora do escopo desta suite de testes unitarios.
