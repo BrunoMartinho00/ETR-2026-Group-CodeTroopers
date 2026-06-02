@@ -15,16 +15,16 @@
 
 ## Executar todos os testes unitarios
 - Comando:
-  - `python -m pytest tests/unit -q`
+  - `python -m pytest tests/unit -v`
 
 ## Executar um ficheiro de teste
 - Comando:
-  - `python -m pytest tests/unit/test_validations.py -q`
+  - `python -m pytest tests/unit/test_validations.py -v`
   - Este ficheiro contem os 11 testes associados ao Lab 12: 9 do escopo selecionado e 2 testes adicionais de regressao.
 
 ## Executar um teste especifico
 - Comando:
-  - `python -m pytest tests/unit/test_validations.py::test_evidence_365_days_old_is_accepted -q`
+  - `python -m pytest tests/unit/test_validations.py::test_evidence_365_days_old_is_accepted -v`
 
 ## Notas
 - A suite completa tambem inclui os 8 testes test-first criados no Lab 11 em `tests/unit/test_lab11_validations.py`.
@@ -34,3 +34,4 @@
 - Dicas de troubleshooting:
   - Se o PyTest nao estiver instalado, executar `python -m pip install pytest`.
   - Executar os comandos a partir da raiz do repositorio para que os imports de `src` sejam resolvidos corretamente.
+  - A opcao `-v` mostra o nome e o resultado de cada teste.

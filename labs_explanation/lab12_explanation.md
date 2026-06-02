@@ -80,13 +80,13 @@ def test_evidence_366_days_old_is_rejected():
 Para executar toda a suite:
 
 ```powershell
-python -m pytest tests/unit -q
+python -m pytest tests/unit -v
 ```
 
 Para executar apenas o ficheiro associado ao Lab 12:
 
 ```powershell
-python -m pytest tests/unit/test_validations.py -q
+python -m pytest tests/unit/test_validations.py -v
 ```
 
 Na verificacao de 2026-06-02:
