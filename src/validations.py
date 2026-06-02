@@ -1,4 +1,5 @@
 from datetime import date
+from urllib.parse import urlparse
 
 
 def validate_required_fields(data):
@@ -75,3 +76,23 @@ def validate_evidence_age(evidence_date, server_date):
         "error": None,
         "age_days": age_days,
     }
+
+
+def validate_dashboard_url(url):
+    parsed_url = urlparse(url)
+
+    return (
+        parsed_url.scheme == "https"
+        and parsed_url.hostname is not None
+        and "." in parsed_url.hostname
+    )
+
+
+def validate_integration_owner_email(email):
+    local_part, separator, domain = email.partition("@")
+
+    return bool(local_part) and separator == "@" and domain == "empresa.com"
+
+
+def validate_hostname_uniqueness(hostname, existing_hostnames):
+    return hostname not in existing_hostnames
