@@ -162,6 +162,7 @@ Este documento detalha os 15 requisitos principais para o módulo de Intake & Di
 * **Impacto da Variante:** Sim
 * **Critérios de Aceitação:**
     * 95% dos pedidos de validação cumprem o tempo limite de 500ms.
+    * Pedidos que excedam 500ms ficam registados para análise de performance.
 * **Método de Validação:** Teste de Performance (Teste de Carga).
 * **Pré-condições:** O sistema recebe o payload JSON para validação.
 * **Pós-condições:** O resultado da validação é entregue ao cliente dentro do SLA estipulado.
@@ -176,6 +177,7 @@ Este documento detalha os 15 requisitos principais para o módulo de Intake & Di
 * **Impacto da Variante:** Não
 * **Critérios de Aceitação:**
     * O dashboard de monitorização reporta falhas inferiores a 43 minutos por mês.
+    * Falhas de disponibilidade ficam registadas com data/hora e duração.
 * **Método de Validação:** Medição de Telemetria.
 * **Pré-condições:** O sistema está em ambiente de produção.
 * **Pós-condições:** N/A.
@@ -190,6 +192,7 @@ Este documento detalha os 15 requisitos principais para o módulo de Intake & Di
 * **Impacto da Variante:** Sim
 * **Critérios de Aceitação:**
     * Impossibilidade de forçar a criação de um registo inválido através de chamadas de API (Postman/Curl).
+    * Registos que falhem qualquer regra de consistência não podem atingir o estado "Pronto".
 * **Método de Validação:** Auditoria e Penetration Testing Lógico.
 * **Pré-condições:** Registo tentar gravar estado "Ready".
 * **Pós-condições:** Apenas dados 100% validados residem no estado final.
@@ -204,6 +207,7 @@ Este documento detalha os 15 requisitos principais para o módulo de Intake & Di
 * **Impacto da Variante:** Sim
 * **Critérios de Aceitação:**
     * O elemento visual a vermelho aparece sob o campo afetado em < 1000ms após o evento de validação.
+    * A mensagem de erro identifica explicitamente o campo afetado e a regra violada.
 * **Método de Validação:** Teste de Performance UI.
 * **Pré-condições:** O utilizador insere um dado logicamente inválido.
 * **Pós-condições:** Feedback visual imediato fornecido ao utilizador.
@@ -218,6 +222,7 @@ Este documento detalha os 15 requisitos principais para o módulo de Intake & Di
 * **Impacto da Variante:** Não
 * **Critérios de Aceitação:**
     * Tentativas de eliminação de logs com menos de 365 dias são rejeitadas pelo sistema.
+    * Logs com menos de 12 meses continuam disponíveis para consulta por perfil autorizado.
 * **Método de Validação:** Inspeção de Políticas de Retenção (Storage).
 * **Pré-condições:** Logs gerados pelo sistema.
 * **Pós-condições:** Acesso garantido a histórico de 1 ano.

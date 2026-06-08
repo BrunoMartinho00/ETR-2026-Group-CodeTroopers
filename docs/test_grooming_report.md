@@ -33,17 +33,18 @@
 ## Atualizações de rastreabilidade
 - O `docs/traceability_master.md` foi criado como matriz consolidada.
 - Foram ligados requisitos funcionais, NFRs, ACs, casos de teste, unit tests, cenários BDD e evidências.
-- Foram identificadas lacunas em requisitos ainda não automatizados, como REQ-004, REQ-006, NFR-001 e NFR-002.
+- Foi resolvida a lacuna de rastreabilidade do REQ-004 ao ligar os testes Lab 11 de Dashboard URL.
+- Permanecem lacunas de automação futura em REQ-006, NFR-001 e NFR-002.
 
 ## Evidência de execução dos testes
-- Data: 2026-05-26
+- Data: 2026-06-08
 - Comandos usados:
   - `python -m pytest tests/unit -q`
   - `python -m behave bdd/features/lab13.feature`
 
 - Testes unitários:
-  - Executados: 11
-  - Passaram: 11
+  - Executados: 19
+  - Passaram: 19
   - Falharam: 0
 
 - Cenários BDD:

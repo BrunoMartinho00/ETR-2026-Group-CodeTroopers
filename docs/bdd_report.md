@@ -10,7 +10,7 @@
   - `python -m behave bdd/features/lab13.feature`
 
 ## Resultados de execucao
-- Data: 2026-05-26
+- Data: 2026-06-08
 - Ficheiros de feature executados: 1
 - Cenarios executados: 6
 - Passaram: 6
@@ -26,7 +26,7 @@ Resumo da execucao:
 1 feature passed, 0 failed, 0 skipped
 6 scenarios passed, 0 failed, 0 skipped
 28 steps passed, 0 failed, 0 skipped
-Took 0min 0.028s
+Took 0min 0.016s
 ```
 
 ## Notas

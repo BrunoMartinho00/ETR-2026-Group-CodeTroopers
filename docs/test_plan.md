@@ -7,9 +7,10 @@
 ## 2) Test strategy (static + dynamic)
 ### Static testing (reviews)
 - **What we review:** Requisitos Funcionais (REQ-001 a REQ-009), Requisitos Não Funcionais (NFR-001 e NFR-002) e Critérios de Aceitação (AC).
-- **Review checklist:** - Os requisitos são testáveis e não ambíguos?
-    - Todos os critérios de aceitação têm um teste associado?
-    - As regras de integridade da Variante 4 estão cobertas por casos negativos?
+- **Review checklist:**
+  - Os requisitos são testáveis e não ambíguos?
+  - Todos os critérios de aceitação têm um teste associado?
+  - As regras de integridade da Variante 4 estão cobertas por casos negativos?
 
 ### Dynamic testing (planned execution)
 | Level | What we test | Examples | Evidence |
@@ -26,11 +27,12 @@
 
 ## 4) BDD plan (what behaviors become scenarios)
 - **Feature(s):** Gatekeeper de Qualidade e Consistência de Dados (Variante 4).
-- **Scenarios:** - Prevenir informações contraditórias de Disaster Recovery.
-    - Permitir progresso parcial através do modo Rascunho (Draft).
-    - Detetar nome de ativo duplicado.
-    - Happy path — Submissão de inventário com dados consistentes e completos.
-- **Links to REQs:** REQ-003, REQ-008, REQ-007.
+- **Scenarios:**
+  - Prevenir informações contraditórias de Disaster Recovery.
+  - Permitir progresso parcial através do modo Rascunho (Draft).
+  - Detetar nome de ativo duplicado.
+  - Happy path — Submissão de inventário com dados consistentes e completos.
+- **Links to REQs:** REQ-003, REQ-007, REQ-008, REQ-009.
 
 ## 5) Coverage goals
 - **Happy path:** Submissão de um ativo com todos os campos válidos e consistentes.
@@ -39,10 +41,12 @@
 - **Boundary tests:** Validação de evidência com exatamente 365 dias (aceite) e 366 dias (rejeitada) (REQ-005).
 
 ## 6) NFR validation approach
-- **NFR-001 (Audit Log):** - **How we verify:** Revisão de base de dados após alteração de campos críticos para confirmar a criação de registos imutáveis (TC-008).
-- **NFR-002 (Performance):** - **How we verify:** Medição do tempo de resposta do motor de regras durante a submissão, garantindo que o processamento ocorre em < 500ms (TC-007).
+- **NFR-001 (Audit Log):**
+  - **How we verify:** Revisão de base de dados após alteração de campos críticos para confirmar a criação de registos imutáveis (TC-008).
+- **NFR-002 (Performance):**
+  - **How we verify:** Medição do tempo de resposta do motor de regras durante a submissão, garantindo que o processamento ocorre em < 500ms (TC-007).
 
 ## 7) Evidence recording and responsibilities
-- **Where results are stored (repo paths):** `docs/test_results/` e logs de CI/CD.
+- **Where results are stored (repo paths):** `docs/test_cases.md`, `bdd/features/lab9.feature`, `docs/test_execution.md`, `docs/unit_test_report.md` e `docs/bdd_report.md`.
 - **Who maintains traceability:** QA Lead e Data Steward da equipa CodeTroopers.
 - **How updates are tracked:** Através do histórico de commits no GitHub e atualização da matriz de rastreabilidade (`docs/traceability_req_ac_tc.md`).

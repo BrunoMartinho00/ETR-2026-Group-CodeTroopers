@@ -15,21 +15,21 @@
 - **Gatilho (Trigger):** O utilizador clica no botão "Submeter Final".
 - **Pós-condições (Sucesso):** O registo é gravado na Base de Dados com estado "Ready"; Um ID único é gerado; O Data Steward é notificado.
 - **Pós-condições (Falha):** O registo não é gravado (ou permanece em "Draft"); Mensagens de erro são exibidas e nenhuma alteração crítica é persistida.
-- **Requisitos Relacionados:** REQ-001, REQ-002, REQ-003, REQ-005, REQ-006, NFR-002.
+- **Requisitos Relacionados:** REQ-001, REQ-002, REQ-003, REQ-005, REQ-006, REQ-007, REQ-009, NFR-002.
 
 ### Fluxo Principal (Caminho Feliz)
 1. O **Ator** preenche os campos de identificação do ativo (Nome, Owner, Tipo).
 2. O **Ator** carrega o ficheiro de evidência (PDF) de compra (inclui UC-03).
 3. O **Ator** clica no botão "Submeter".
 4. O **Sistema** executa o motor de validação de consistência (inclui UC-04).
-5. O **Sistema** verifica na "Asset Database" externa se o Serial Number/Hostname é único (REQ-005).
+5. O **Sistema** verifica na "Asset Database" externa se o Hostname é único (REQ-007).
 6. O **Sistema** grava o registo como "Ready".
 7. O **Sistema** apresenta uma mensagem de sucesso e o ID do novo ativo.
 
 ### Fluxos Alternativos
 **A1. Guardar como Rascunho (Draft)**
 1. No passo 3, o **Ator** clica em "Guardar Rascunho".
-2. O **Sistema** ignora as validações de campos obrigatórios (REQ-006).
+2. O **Sistema** ignora as validações de campos obrigatórios (REQ-008).
 3. O **Sistema** grava o registo com a flag `is_draft=True`.
 4. O caso de uso termina com sucesso (estado parcial).
 
@@ -48,29 +48,47 @@
 
 ---
 
-## UC-04 — Validar Regras de Consistência (Backend)
-- **Ator Principal:** Sistema (Automático / Motor de Regras).
-- **Atores Secundários:** N/A.
-- **Objetivo:** Garantir a integridade referencial, lógica e temporal dos dados antes de qualquer persistência oficial. Este é o núcleo da Variante "Data Steward".
-- **Pré-condições:** O sistema recebeu um payload de dados (JSON) vindo do interface de submissão.
-- **Gatilho (Trigger):** Invocado automaticamente pelo UC-01 ("Submeter") ou manualmente por um Data Steward numa auditoria.
-- **Pós-condições (Sucesso):** Retorna status "OK" e a lista de dados sanitizados.
-- **Pós-condições (Falha):** Retorna status "ERRO" e uma lista estruturada de violações de regras.
-- **Requisitos Relacionados:** REQ-001, REQ-002, REQ-003, REQ-004, NFR-004.
+## UC-04 — Validar Regras de Consistência
+
+- **Ator Principal:** Data Steward.
+- **Atores Secundários:** End User, Asset Database.
+- **Objetivo:** Validar a qualidade, integridade lógica e consistência temporal dos dados antes da transição para "Ready to Proceed".
+- **Pré-condições:** Existe um formulário de Intake preenchido ou parcialmente preenchido.
+- **Gatilho (Trigger):** O End User tenta submeter o Intake final ou o Data Steward solicita validação manual dos dados.
+- **Pós-condições (Sucesso):** O Intake é considerado válido e pode avançar para "Ready to Proceed".
+- **Pós-condições (Falha):** O Intake permanece em "Incomplete" ou "Inconsistent", com erros identificados para correção.
+- **Requisitos Relacionados:** REQ-001, REQ-002, REQ-003, REQ-005, REQ-007, REQ-009, NFR-002, NFR-004.
 
 ### Fluxo Principal (Caminho Feliz)
-1. O **Sistema** valida os tipos de dados básicos (Data, Inteiro, String) e limites de caracteres.
-2. O **Sistema** verifica o preenchimento de todos os campos marcados como obrigatórios (REQ-001).
-3. O **Sistema** verifica as dependências condicionais (Lógica "Se X então Y" - ex: Se Tipo="Servidor" então "Rack" é obrigatório).
-4. O **Sistema** valida a consistência lógica de datas (ex: Data Fim > Data Início).
-5. O **Sistema** verifica os metadados da evidência (Data do ficheiro < 12 meses - REQ-004).
-6. O **Sistema** retorna o resultado "Válido" para o processo chamador.
+1. O **Ator** solicita a validação dos dados do Intake.
+2. O **Sistema** verifica se os campos obrigatórios estão preenchidos (REQ-001).
+3. O **Sistema** verifica a regra de Disaster Recovery: se DR = "Sim", a data do último teste é obrigatória (REQ-002).
+4. O **Sistema** verifica se existe contradição entre DR = "Não" e uma data de teste preenchida (REQ-003).
+5. O **Sistema** verifica se a evidência operacional tem 12 meses ou menos e não tem data futura (REQ-005).
+6. O **Sistema** consulta a Asset Database para confirmar que o Hostname é único (REQ-007).
+7. O **Sistema** devolve o resultado "Válido" e permite a transição para "Ready to Proceed" (REQ-009).
 
 ### Fluxos Alternativos
-*N/A (Este é um processo de sistema de "caixa negra").*
+**A1. Validação preventiva pelo Data Steward**
+1. O **Data Steward** seleciona um Intake em estado "Draft".
+2. O **Data Steward** solicita a validação antes da submissão final.
+3. O **Sistema** executa as mesmas regras de consistência.
+4. O **Sistema** apresenta uma lista de problemas encontrados, sem alterar o estado final do Intake.
+
+**A2. Correção após falha de validação**
+1. O **Ator** recebe a lista de erros de consistência.
+2. O **Ator** corrige os campos indicados.
+3. O **Ator** solicita nova validação.
+4. O **Sistema** reexecuta as regras e atualiza o resultado.
 
 ### Exceções / Erros
 **E1. Violação de Regra de Negócio Crítica**
-1. Durante a validação (passos 2-5), uma regra é quebrada (ex: Inconsistência de DR - REQ-003).
-2. O **Sistema** adiciona o erro a uma lista acumulativa de falhas (não para na primeira falha).
-3. O **Sistema** termina a validação e retorna o objeto de erro completo (ex: `{ "valid": false, "errors": ["Campo DR inválido", "Data expirada"] }`).
+1. Durante a validação, o **Sistema** deteta uma regra quebrada, como DR = "Não" com data de teste preenchida (REQ-003).
+2. O **Sistema** marca o Intake como "Inconsistent".
+3. O **Sistema** bloqueia a transição para "Ready to Proceed".
+4. O **Sistema** apresenta a regra violada e o campo afetado.
+
+**E2. Duplicado encontrado na Asset Database**
+1. Durante a verificação de unicidade, a **Asset Database** indica que o Hostname já existe (REQ-007).
+2. O **Sistema** bloqueia a validação final.
+3. O **Sistema** informa que o ativo já existe e deve ser revisto antes de nova submissão.

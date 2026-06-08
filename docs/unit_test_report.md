@@ -51,7 +51,7 @@ Estes testes continuam na suite, mas nao contam para o escopo selecionado do Lab
 
 ## Evidencia de execucao
 
-- Data da verificacao atual: 2026-06-02
+- Data da verificacao atual: 2026-06-08
 - Comando usado: `python -m pytest tests/unit -v`
 - Resumo do resultado:
   - Testes executados na suite completa: 19

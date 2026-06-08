@@ -2,6 +2,17 @@
 
 Este documento estabelece a ligação entre os Requisitos Funcionais (FR) e Não Funcionais (NFR) definidos no REM v1 e os Casos de Teste (TC) desenhados para o Lab 9, garantindo a cobertura total da **Variante 4 (Data Quality & Consistency)**.
 
+## Selected requirements (8)
+
+- **REQ-001** — Validação de Campos Obrigatórios
+- **REQ-002** — Condicionalidade de Teste de DR
+- **REQ-003** — Deteção de Inconsistência de DR
+- **REQ-005** — Validação de Caducidade de Evidências
+- **REQ-007** — Prevenção de Duplicados (Unicidade)
+- **REQ-008** — Gestão de Estados (Rascunho)
+- **NFR-001** — Log de Auditoria
+- **NFR-002** — Performance de Validação
+
 ## Mapeamento de Rastreabilidade
 
 | ID Requisito | Título do Requisito | Caso de Teste (TC) | 

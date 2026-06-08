@@ -4,6 +4,8 @@
 - **Epic/Area:** Intake & Data Quality (Módulo de Inventário)
 - **Slice:** A — Intake & Discovery (Data Capture & Validation)
 - **Short description:** Protótipo funcional do formulário de recolha de ativos, focado no motor de regras de Data Quality e na lógica de consistência cruzada entre campos dependentes para a Variante 4.
+- **Prototype path:** `asset-form-guardian-main/`
+- **Run commands:** `npm install` e depois `npm run dev` dentro de `asset-form-guardian-main/`.
 
 ## Actors / roles
 - **Primary actor:** Transition Lead (Utilizador responsável pela submissão inicial e correção de dados)

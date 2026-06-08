@@ -16,7 +16,7 @@
 - **UC-01:** Submeter Novo Ativo
 - **UC-02:** Gerir Rascunhos (Drafts)
 - **UC-03:** Carregar Evidência (PDF)
-- **UC-04:** Validar Regras de Consistência (Backend - Variante 4)
+- **UC-04:** Validar Regras de Consistência
 - **UC-05:** Resolver Inconsistências de Dados
 - **UC-06:** Exportar Logs de Auditoria
 

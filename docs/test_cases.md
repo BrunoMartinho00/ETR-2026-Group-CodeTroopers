@@ -78,7 +78,7 @@
 - **Steps:** Alterar o campo "Owner" de um ativo existente e submeter.
 - **Expected results:** O sistema gera um registo imutável no Log de Auditoria com UserID, Timestamp e valores antigo/novo.
 
-- ## TC-009 — Validação de Formato de E-mail do Owner [Negative]
+## TC-009 — Validação de Formato de E-mail do Owner [Negative]
 - **Type:** Unit / UI
 - **Related requirements:** REQ-006 (AC-1)
 - **Preconditions:** Formulário de Intake aberto.
@@ -130,7 +130,7 @@
   2. Observar o comportamento da interface gráfica enquanto o motor de regras processa as validações de consistência cruzada.
 - **Expected results:** A interface gráfica apresenta obrigatoriamente um indicador visual de carregamento (*spinner*) durante o tempo de processamento, dado que a resposta excedeu o limiar de 200ms.
 
-- ## TC-014 — Falta de Campo Obrigatório Standard [Negative]
+## TC-014 — Falta de Campo Obrigatório Standard [Negative]
 - **Type:** Unit / UI
 - **Related requirements:** REQ-001 (AC-1)
 - **Preconditions:** Formulário de Intake aberto para um novo registo.

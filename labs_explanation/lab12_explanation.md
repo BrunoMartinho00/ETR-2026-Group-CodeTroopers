@@ -89,7 +89,7 @@ Para executar apenas o ficheiro associado ao Lab 12:
 python -m pytest tests/unit/test_validations.py -v
 ```
 
-Na verificacao de 2026-06-02:
+Na verificacao de 2026-06-08:
 
 - suite completa do repositorio: 19 testes passaram
 - ficheiro do Lab 12: 11 testes passaram

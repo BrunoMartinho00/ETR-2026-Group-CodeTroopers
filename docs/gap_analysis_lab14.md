@@ -7,9 +7,9 @@
 
 ## REQs with documented tests but no automated tests
 - REQ-004 — Dashboard URL validation
-  - Current coverage: ACs documented in `docs/acceptance_criteria.md`.
-  - Gap: no TC/UT/BDD automation currently linked in `docs/traceability_master.md`.
-  - Action: add future unit tests for HTTPS URL validation and invalid domain syntax.
+  - Current coverage: ACs documented in `docs/acceptance_criteria.md` and automated by Lab 11 tests T-01, T-02 and T-03 in `tests/unit/test_lab11_validations.py`.
+  - Gap status: resolved during traceability consolidation.
+  - Action: keep the existing Lab 11 unit tests linked in `docs/traceability_master.md`.
 
 - REQ-006 — Owner identification in integrations
   - Current coverage: TC-009, TC-012.
@@ -38,8 +38,8 @@
 
 ## AC items not covered by tests
 - REQ-004 / AC-1 and AC-2
-  - Gap: HTTPS dashboard URL validation has no automated unit or BDD scenario.
-  - Action: add future unit tests for accepted `https://` URLs and rejected non-HTTPS or malformed URLs.
+  - Gap status: resolved.
+  - Action: linked existing Lab 11 unit tests for accepted `https://` URLs and rejected non-HTTPS or malformed URLs.
 
 - REQ-006 / AC-2 and AC-3
   - Gap: Active Directory existence check and autocomplete suggestions are not automated.
@@ -58,4 +58,5 @@
 2. Linked Lab 12 unit tests (`UT-01` to `UT-11`) to REQ-001, REQ-003, and REQ-005.
 3. Linked Lab 13 BDD scenarios to REQ-001, REQ-003, and REQ-005.
 4. Linked Lighthouse evidence to NFR-002 as UI quality support.
-5. Identified requirements and ACs that are documented but not yet automated.
+5. Resolved the REQ-004 traceability gap by linking the existing Lab 11 Dashboard URL unit tests.
+6. Identified remaining requirements and ACs that are documented but not yet automated.

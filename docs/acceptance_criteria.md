@@ -12,7 +12,7 @@
 - **AC-1:** O sistema deve exibir o campo "Data do Último Teste" e marcá-lo visualmente como obrigatório assim que o utilizador selecionar a opção "Sim" no campo "Disaster Recovery (DR)".
 - **AC-2** Se o utilizador selecionar "Sim" em DR e tentar "Submeter Final" com a "Data do Último Teste" vazia, o sistema deve bloquear a submissão e exibir a mensagem de erro "Campo obrigatório para sistemas com resiliência".
 - **AC-3** Se o utilizador selecionar "Sim" e preencher uma data válida, o sistema deve aceitar a transação e permitir o avanço na validação do motor de regras.
-- 
+
 ## REQ-003 — Inconsistência DR (Given/When/Then)
 - **Given** que o utilizador selecionou "DR = Não".
 - **When** o utilizador introduz qualquer data no campo de teste de DR.
@@ -48,7 +48,7 @@
 ## REQ-009 — Transição para "Ready to Proceed"
 - **AC-1:** A transição de estado na base de dados para "Ready" só ocorre se o payload do motor de regras retornar 0 erros lógicos.
 - **AC-2:** Ao clicar no botão "Submeter Final", o sistema deve obrigatoriamente forçar a reexecução de todo o motor de regras (UC-04), não assumindo como válidos quaisquer dados previamente guardados no estado "Draft".
-- **AC-3:* Se o motor de regras retornar 1 ou mais erros (ex: inconsistência ou dados em falta), a transição para "Ready" deve ser abortada, o ativo deve manter o estado "Draft" ou "Incompleto" na base de dados, e os erros devem ser sinalizados na interface.
+- **AC-3:** Se o motor de regras retornar 1 ou mais erros (ex: inconsistência ou dados em falta), a transição para "Ready" deve ser abortada, o ativo deve manter o estado "Draft" ou "Incompleto" na base de dados, e os erros devem ser sinalizados na interface.
 
 ## NFR-001 — Log de Auditoria
 - **AC-1:** Qualquer alteração (update) aos campos "Nome", "Owner" ou "Disaster Recovery" num ativo já existente gera um registo em tabela *append-only*.

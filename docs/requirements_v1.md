@@ -12,82 +12,170 @@
 ## 2. Requisitos Funcionais (FR)
 
 ### REQ-001: Validação de Campos Obrigatórios
-* **Fonte:** Data Steward / Transition Lead
-* **Descrição:** O sistema impede a submissão se "Nome do Sistema", "Owner" ou "Modelo de Suporte" estiverem vazios.
-* **Racional:** Evitar o registo de ativos "órfãos" ou sem identificação básica na CMDB.
-* **Prioridade:** Alta (H) | **Impacto da Variante:** Sim
-* **Método de Validação:** Demonstração (Teste de Interface).
-* **Critérios de Aceitação:** - Bloqueio de submissão com campos vazios.
-    - Estado do Intake permanece "Incomplete".
+* **Type:** FR
+* **Fonte / Stakeholder:** Data Steward / Transition Lead
+* **Prioridade:** Alta (H)
+* **Objective:** OBJ-1 — Garantir a integridade e consistência dos dados de inventário.
+* **CSF/FCS:** FCS-1 — Dados de inventário são consistentes, únicos e validados antes do estado operacional.
+* **Descrição:** O sistema deve impedir a submissão final de um formulário de Intake quando os campos obrigatórios "Nome do Sistema", "Owner" ou "Modelo de Suporte" estiverem vazios.
+* **Impacto da Variante:** Yes
+* **Critérios de Aceitação (draft):**
+  - Se um campo obrigatório estiver vazio, a submissão final é bloqueada.
+  - O estado do Intake permanece "Incomplete".
+  - O sistema indica quais os campos obrigatórios em falta.
 
 ### REQ-002: Condicionalidade de Teste de Disaster Recovery (DR)
-* **Fonte:** Data Steward / Auditor
-* **Descrição:** Se "Disaster Recovery" = "Sim", a "Data do Último Teste" é obrigatória.
-* **Racional:** Garantir que sistemas críticos têm evidência de resiliência.
-* **Prioridade:** Alta (H) | **Impacto da Variante:** Sim
-* **Método de Validação:** Teste de Unidade / Lógica de Interface.
+* **Type:** FR
+* **Fonte / Stakeholder:** Data Steward / Auditor
+* **Prioridade:** Alta (H)
+* **Objective:** OBJ-1 — Garantir a integridade e consistência dos dados de inventário.
+* **CSF/FCS:** FCS-1 — Dados de inventário são consistentes, únicos e validados antes do estado operacional.
+* **Descrição:** O sistema deve exigir uma data válida no campo "Data do Último Teste de DR" quando "Disaster Recovery" estiver marcado como "Sim".
+* **Impacto da Variante:** Yes
+* **Critérios de Aceitação (draft):**
+  - Se DR = "Sim" e a data de teste estiver vazia, a submissão final é bloqueada.
+  - Se DR = "Sim" e a data for válida, a validação desta regra passa.
+  - A data de teste não pode estar no futuro.
 
 ### REQ-003: Deteção de Inconsistência de DR
-* **Fonte:** Data Steward (Variante 4)
-* **Descrição:** Bloquear estado "Ready" se DR = "Não" mas existir uma data de teste preenchida.
-* **Racional:** Manter a sanidade lógica dos dados (evitar contradições).
-* **Prioridade:** Alta (H) | **Impacto da Variante:** Sim (Crucial)
+* **Type:** FR
+* **Fonte / Stakeholder:** Data Steward
+* **Prioridade:** Alta (H)
+* **Objective:** OBJ-1 — Garantir a integridade e consistência dos dados de inventário.
+* **CSF/FCS:** FCS-1 — Dados de inventário são consistentes, únicos e validados antes do estado operacional.
+* **Descrição:** O sistema deve bloquear a transição para "Ready to Proceed" quando "Disaster Recovery" estiver marcado como "Não" e existir uma data de teste de DR preenchida.
+* **Impacto da Variante:** Yes
+* **Critérios de Aceitação (draft):**
+  - Se DR = "Não" e existir data de teste, o Intake é marcado como "Inconsistent".
+  - O estado "Ready to Proceed" fica indisponível até a inconsistência ser corrigida.
+  - Se a data for removida, a regra deixa de falhar.
 
-### REQ-004: Evidência de Observabilidade (Dashboard URL)
-* **Fonte:** Transition Lead
-* **Descrição:** Exigir um URL HTTPS válido para o dashboard de monitorização.
-* **Racional:** Validar que o ativo está a ser monitorizado antes da transição operacional.
-* **Prioridade:** Média (M) | **Impacto da Variante:** Não
+### REQ-004: Evidência de Observabilidade
+* **Type:** FR
+* **Fonte / Stakeholder:** Transition Lead
+* **Prioridade:** Média (M)
+* **Objective:** OBJ-1 — Garantir a integridade e consistência dos dados de inventário.
+* **CSF/FCS:** FCS-1 — Dados de inventário são consistentes, únicos e validados antes do estado operacional.
+* **Descrição:** O sistema deve exigir um URL HTTPS válido para o dashboard de monitorização associado ao sistema em transição.
+* **Impacto da Variante:** No
+* **Critérios de Aceitação (draft):**
+  - URLs que não começam por `https://` são rejeitados.
+  - URLs sem domínio válido são rejeitados.
+  - Um URL HTTPS com domínio válido é aceite.
 
 ### REQ-005: Validação de Caducidade de Evidências
-* **Fonte:** Data Steward / Transition Lead
-* **Descrição:** Rejeitar evidências operacionais com data superior a 12 meses (365 dias).
-* **Racional:** Garantir que o inventário reflete o estado atual e não histórico obsoleto.
-* **Prioridade:** Alta (H) | **Impacto da Variante:** Sim (Temporal)
+* **Type:** FR
+* **Fonte / Stakeholder:** Data Steward / Transition Lead
+* **Prioridade:** Alta (H)
+* **Objective:** OBJ-1 — Garantir a integridade e consistência dos dados de inventário.
+* **CSF/FCS:** FCS-1 — Dados de inventário são consistentes, únicos e validados antes do estado operacional.
+* **Descrição:** O sistema deve rejeitar evidências operacionais cuja data seja superior a 12 meses em relação à data de validação.
+* **Impacto da Variante:** Yes
+* **Critérios de Aceitação (draft):**
+  - Evidências com 12 meses ou menos são aceites.
+  - Evidências com mais de 12 meses são rejeitadas.
+  - Evidências com data futura são rejeitadas.
 
 ### REQ-006: Identificação de Owner em Integrações
-* **Fonte:** Transition Lead
-* **Descrição:** Cada integração deve ter um ID de utilizador ou email válido associado.
-* **Prioridade:** Média (M) | **Impacto da Variante:** Não
+* **Type:** FR
+* **Fonte / Stakeholder:** Transition Lead
+* **Prioridade:** Média (M)
+* **Objective:** OBJ-2 — Assegurar a rastreabilidade e auditabilidade do processo de Intake.
+* **CSF/FCS:** FCS-2 — Alterações a dados críticos e responsabilidades são totalmente rastreáveis.
+* **Descrição:** O sistema deve exigir que cada integração declarada no Intake tenha um owner identificado por ID de utilizador ou email válido.
+* **Impacto da Variante:** No
+* **Critérios de Aceitação (draft):**
+  - Uma integração sem owner é rejeitada na submissão final.
+  - Um email de owner deve ter formato válido.
+  - Um ID de utilizador não pode estar vazio.
 
-### REQ-007: Prevenção de Duplicados (Unicidade)
-* **Fonte:** Data Steward
-* **Descrição:** Impedir a criação de ativo se o Hostname já existir na base de dados ativa.
-* **Racional:** Evitar distorção na contabilidade de ativos e custos.
-* **Prioridade:** Alta (H) | **Impacto da Variante:** Sim (Integridade)
+### REQ-007: Prevenção de Duplicados
+* **Type:** FR
+* **Fonte / Stakeholder:** Data Steward
+* **Prioridade:** Alta (H)
+* **Objective:** OBJ-1 — Garantir a integridade e consistência dos dados de inventário.
+* **CSF/FCS:** FCS-1 — Dados de inventário são consistentes, únicos e validados antes do estado operacional.
+* **Descrição:** O sistema deve impedir a criação de um novo registo quando o hostname informado já existir na base ativa de sistemas.
+* **Impacto da Variante:** Yes
+* **Critérios de Aceitação (draft):**
+  - Se o hostname já existir, a criação do registo é bloqueada.
+  - A validação ignora diferenças de maiúsculas/minúsculas.
+  - Hostnames únicos são aceites.
 
-### REQ-008: Gestão de Estados (Rascunho / Draft)
-* **Fonte:** Transition Lead
-* **Descrição:** Permitir guardar o formulário sem validações cruzadas.
-* **Prioridade:** Média (M) | **Impacto da Variante:** Sim (Flexibilidade)
+### REQ-008: Gestão de Estados Draft
+* **Type:** FR
+* **Fonte / Stakeholder:** Transition Lead
+* **Prioridade:** Média (M)
+* **Objective:** OBJ-3 — Otimizar a eficiência operacional e resiliência do sistema.
+* **CSF/FCS:** FCS-3 — O sistema fornece feedback imediato, é fiável e permite fluxos de trabalho flexíveis.
+* **Descrição:** O sistema deve permitir guardar um Intake como "Draft" sem executar as validações cruzadas obrigatórias da submissão final.
+* **Impacto da Variante:** Yes
+* **Critérios de Aceitação (draft):**
+  - Um formulário incompleto pode ser guardado como "Draft".
+  - Um "Draft" não pode ser marcado como "Ready to Proceed".
+  - As validações cruzadas obrigatórias são executadas apenas na submissão final.
 
-### REQ-009: Transição para "Ready to Proceed"
-* **Fonte:** Data Steward
-* **Descrição:** O estado "Ready" exige 100% de sucesso em todas as regras de consistência.
-* **Prioridade:** Alta (H) | **Impacto da Variante:** Sim
+### REQ-009: Transição para Ready to Proceed
+* **Type:** FR
+* **Fonte / Stakeholder:** Data Steward
+* **Prioridade:** Alta (H)
+* **Objective:** OBJ-1 — Garantir a integridade e consistência dos dados de inventário.
+* **CSF/FCS:** FCS-1 — Dados de inventário são consistentes, únicos e validados antes do estado operacional.
+* **Descrição:** O sistema deve permitir a transição para "Ready to Proceed" apenas quando todas as validações obrigatórias e regras de consistência forem concluídas com sucesso.
+* **Impacto da Variante:** Yes
+* **Critérios de Aceitação (draft):**
+  - Se qualquer validação obrigatória falhar, a transição é bloqueada.
+  - Se todas as validações passarem, o Intake pode passar para "Ready to Proceed".
+  - O estado final não pode conter inconsistências conhecidas.
 
 ---
 
 ## 3. Requisitos Não Funcionais (NFR)
 
 ### NFR-001: Log de Auditoria
-* **Descrição:** Registar UserID, Timestamp, Old/New value para campos críticos.
-* **Racional:** Compliance e rastreabilidade de alterações.
+* **Type:** NFR
+* **Descrição:** O sistema deve registar alterações em campos críticos, incluindo UserID, timestamp, valor anterior e valor novo.
+* **Métrica / Threshold:** 100% das alterações em campos críticos devem gerar registo de auditoria.
+* **Condições:** Durante criação, edição ou submissão final de Intake.
+* **Measurement approach:** Revisão dos logs gerados após alteração de campos críticos.
+* **Impacto da Variante:** No
 
 ### NFR-002: Performance de Validação
-* **Declaração Mensurável:** Resposta < 500ms para 95% dos pedidos de validação cruzada.
-* **Impacto da Variante:** Sim (Eficiência).
+* **Type:** NFR
+* **Descrição:** O sistema deve executar validações cruzadas sem atrasar significativamente a submissão do Intake.
+* **Métrica / Threshold:** Resposta inferior a 500ms para 95% dos pedidos de validação cruzada.
+* **Condições:** Sob carga normal de utilização.
+* **Measurement approach:** Medição automática do tempo de execução dos testes de validação.
+* **Impacto da Variante:** Yes
 
 ### NFR-003: Disponibilidade
-* **Declaração Mensurável:** O serviço de validação deve garantir um uptime de 99.9% mensal durante horário laboral.
-* **Impacto da Variante:** Não.
+* **Type:** NFR
+* **Descrição:** O serviço de validação deve estar disponível durante o período normal de operação.
+* **Métrica / Threshold:** Uptime mensal mínimo de 99.9%.
+* **Condições:** Durante horário laboral e janelas de suporte acordadas.
+* **Measurement approach:** Monitorização de disponibilidade mensal.
+* **Impacto da Variante:** No
 
 ### NFR-004: Qualidade de Dados Garantida
-* **Declaração Mensurável:** 100% dos ativos em "Ready" devem cumprir as regras do motor de consistência.
+* **Type:** NFR
+* **Descrição:** O sistema deve garantir que apenas Intakes sem inconsistências conhecidas chegam ao estado "Ready to Proceed".
+* **Métrica / Threshold:** 100% dos Intakes em "Ready to Proceed" devem cumprir as regras de consistência definidas.
+* **Condições:** Antes da transição para estado final.
+* **Measurement approach:** Execução de testes de validação e revisão da matriz de regras.
+* **Impacto da Variante:** Yes
 
-### NFR-005: Tempo de Resposta da UI (Feedback)
-* **Declaração Mensurável:** Identificação visual do erro em < 1s após falha de validação.
+### NFR-005: Tempo de Resposta da UI
+* **Type:** NFR
+* **Descrição:** O sistema deve apresentar feedback visual rapidamente quando uma validação falhar.
+* **Métrica / Threshold:** Mensagem ou indicação visual de erro em menos de 1 segundo após falha de validação.
+* **Condições:** Durante edição ou submissão do formulário.
+* **Measurement approach:** Teste manual ou automatizado do tempo entre falha e apresentação do erro.
+* **Impacto da Variante:** Yes
 
 ### NFR-006: Retenção de Logs
-* **Declaração Mensurável:** Manter logs de auditoria num formato WORM (Write Once Read Many) por um período mínimo de 12 meses.
-* **Impacto da Variante:** Não.
+* **Type:** NFR
+* **Descrição:** O sistema deve manter logs de auditoria para permitir rastreabilidade posterior.
+* **Métrica / Threshold:** Logs de auditoria retidos por pelo menos 12 meses.
+* **Condições:** Para eventos de criação, alteração e submissão final.
+* **Measurement approach:** Revisão da política de retenção e consulta de logs históricos.
+* **Impacto da Variante:** No

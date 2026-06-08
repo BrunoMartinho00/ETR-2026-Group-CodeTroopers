@@ -4,6 +4,7 @@
 
 - Codex / Lovable / Other: **Lovable** (AI pair-programmer, geração guiada por prompt dentro do editor web com preview em tempo real).
 - Environment/stack: **React 18 + TypeScript 5 + Vite 5 + Tailwind CSS v3 + shadcn/ui**. Formulários com `react-hook-form` + `zod` + `@hookform/resolvers/zod`. Notificações com `sonner`. Datas com `date-fns`. Persistência apenas em **LocalStorage** (sem backend, sem login — conforme guardrails académicos).
+- Prototype location in repo: `asset-form-guardian-main/`.
 
 ---
 
@@ -26,16 +27,18 @@
 **Generated output (what appeared):**
 
 - Plano `.lovable/plan.md` com layout ASCII, tabela de regras e ficheiros a criar.
-- Componentes novos:
-  - `src/lib/asset-intake.ts` — schema `zod` com `.superRefine` para regras cross-field (DR, duplicados, 365 dias), tipos partilhados, helpers de LocalStorage (`loadDraft`, `saveDraft`, `loadAudit`, `saveAudit`) e `formatTimestamp`.
-  - `src/components/AssetIntakeForm.tsx` — formulário completo em shadcn/ui (`Form`, `Input`, `Select`, `RadioGroup`, `Popover`+`Calendar`), com dois handlers: `handleSaveDraft` (bypass) e `form.handleSubmit(onSubmitFinal, onSubmitInvalid)` (gatekeeper).
-  - `src/components/StatusBadge.tsx` — badge `Incomplete` / `Draft` / `Ready to Proceed`.
-  - `src/components/AuditLog.tsx` — tabela de auditoria.
-- `src/pages/Index.tsx` atualizada para hospedar o formulário.
+- Protótipo Vite/React criado em `asset-form-guardian-main/`.
+- Implementação final consolidada em `asset-form-guardian-main/src/pages/Index.tsx`, incluindo:
+  - formulário de Intake;
+  - regras de validação de campos obrigatórios, DR, duplicados, URL HTTPS e evidência expirada;
+  - gestão de estados `Incomplete`, `Draft`, `Inconsistent` e `Ready to Proceed`;
+  - persistência em LocalStorage;
+  - log de auditoria visual.
+- Componentes shadcn/ui reutilizados a partir de `asset-form-guardian-main/src/components/ui/`.
 
 **Kept (accepted):**
 
-- Toda a arquitetura proposta: schema `zod` central, separação em 4 componentes, uso de `react-hook-form` com `zodResolver`, `useEffect` a ouvir `watch("hasDR")` para o reset do REQ-003, persistência de draft **e** do audit log em LocalStorage.
+- Toda a arquitetura proposta foi mantida no protótipo, mas a versão exportada do Lovable ficou consolidada principalmente em `src/pages/Index.tsx` em vez de ficheiros separados por componente. A lógica de validação, estado, draft e audit log permaneceu rastreável aos REQ definidos.
 - Comparação de duplicados **case-insensitive** via `.trim().toUpperCase()` antes de comparar com `["PROD-DB", "CORE-ERP"]`.
 - Botão "Guardar Rascunho" com `variant="outline"` e "Submeter Final" com ícone `ShieldCheck`.
 - `toast` de sucesso/erro via `sonner`.

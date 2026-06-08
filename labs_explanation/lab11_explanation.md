@@ -76,7 +76,7 @@ AC usado:
 Os testes foram adicionados em:
 
 ```text
-tests/unit/test_validations.py
+tests/unit/test_lab11_validations.py
 ```
 
 Foram criados 8 testes especificos do Lab 11:
@@ -261,6 +261,7 @@ A evidencia oficial do Lab 11 esta em:
 ```text
 docs/test_first_log.md
 bdd/features/lab11.feature
+tests/unit/test_lab11_validations.py
 tests/unit/test_validations.py
 tests/unit/tests_selenium.py
 src/validations.py

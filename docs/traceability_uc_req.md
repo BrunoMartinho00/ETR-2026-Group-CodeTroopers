@@ -9,7 +9,7 @@ Este documento mapeia os Casos de Uso (UC) aos respetivos Requisitos Funcionais 
 | **UC-01 (Submeter Intake)** | REQ-001, REQ-002, REQ-004, REQ-006, REQ-007, REQ-008, REQ-009, NFR-005 | Cobre todo o fluxo da interface de submissão, recolha de dependências e feedback visual imediato ao utilizador. |
 | **UC-02 (Guardar Rascunho)** | REQ-008 | Foco exclusivo na gestão do estado "Draft", permitindo o *bypass* intencional às validações cruzadas. |
 | **UC-03 (Upload Evidências)** | REQ-005 | Foco no carregamento de ficheiros operacionais e rejeição automática por caducidade (> 365 dias). |
-| **UC-04 (Validar Consistência)**| REQ-001, REQ-002, REQ-003, REQ-005, REQ-007, REQ-009, NFR-002, NFR-004 | **Núcleo da Variante 4:** Atua como o motor de regras no backend, garantindo performance e 100% de qualidade de dados. |
+| **UC-04 (Validar Consistência)**| REQ-001, REQ-002, REQ-003, REQ-005, REQ-007, REQ-009, NFR-002, NFR-004 | **Núcleo da Variante 4:** Atua como validação central de qualidade, garantindo performance e 100% de qualidade de dados. |
 | **UC-05 (Revisão pelo Steward)**| REQ-003, REQ-009 | Interação do Data Steward para corrigir dados sinalizados como "Inconsistente" antes da transição para "Ready". |
 | **UC-06 (Exportar Logs)** | NFR-001, NFR-006 | Exportação do *Audit Trail* para fins de conformidade e garantia de retenção legal por 12 meses. |
 

@@ -33,7 +33,7 @@ Este documento organiza os requisitos do sistema em Épicos lógicos e destaca a
 
 ## Variant Coverage Summary
 * **Variant number:** 4 — Data Quality & Consistency
-* **Variant-driven requirements (FR):** REQ-001, REQ-002, REQ-003, REQ-005, REQ-007, REQ-008, REQ-009
+* **Variant-driven requirements:** REQ-001, REQ-002, REQ-003, REQ-005, REQ-007, REQ-008, REQ-009
 * **Variant-driven NFRs:** NFR-002, NFR-004, NFR-005
 
 ---

@@ -40,6 +40,7 @@ Este documento detalha os Casos de Uso do sistema AMS, focando na lógica de neg
 - **Preconditions:** Formulário de Intake aberto e parcialmente preenchido.
 - **Trigger:** Clique no botão "Guardar Rascunho".
 - **Postconditions (success):** Registo persistido na base de dados com a flag de estado `is_draft=True`.
+- **Postconditions (failure):** O rascunho não é guardado; o utilizador recebe uma mensagem de erro e os dados permanecem no formulário sempre que possível.
 - **Related requirements:** REQ-008.
 
 ### Main flow (happy path)
@@ -50,9 +51,11 @@ Este documento detalha os Casos de Uso do sistema AMS, focando na lógica de neg
 
 ### Alternative flows
 - **A1: Retomar Rascunho:** O Actor acede à lista de rascunhos num dia posterior, carrega os dados no formulário e prossegue com o preenchimento.
+- **A2: Guardar rascunho com inconsistências:** O Actor guarda o formulário mesmo contendo campos obrigatórios em falta ou dados contraditórios. O System mantém o estado como "Draft" e não permite transição para "Ready to Proceed".
 
 ### Exceptions / errors
 - **E1: Perda de Conectividade:** Ocorreu uma falha de rede; o Sistema avisa que não foi possível guardar o rascunho de forma segura.
+- **E2: Erro de persistência temporária:** O System não consegue persistir o rascunho. O System mostra erro, mantém os dados no ecrã e recomenda nova tentativa antes de fechar o formulário.
 
 ---
 
@@ -62,6 +65,7 @@ Este documento detalha os Casos de Uso do sistema AMS, focando na lógica de neg
 - **Preconditions:** Utilizador no ecrã de upload de documentos.
 - **Trigger:** Seleção de um ficheiro no explorador do sistema operativo.
 - **Postconditions (success):** Ficheiro anexado e associado ao ativo.
+- **Postconditions (failure):** O ficheiro não é associado ao ativo; o utilizador recebe uma indicação clara do motivo da rejeição.
 - **Related requirements:** REQ-005.
 
 ### Main flow (happy path)
@@ -73,35 +77,42 @@ Este documento detalha os Casos de Uso do sistema AMS, focando na lógica de neg
 
 ### Alternative flows
 - **A1: Substituição de Evidência:** O Actor faz upload de um novo documento que substitui automaticamente o anterior.
+- **A2: Data de evidência introduzida manualmente:** Quando os metadados do ficheiro não estão disponíveis, o Actor informa a data da evidência e o System valida essa data antes de anexar o ficheiro.
 
 ### Exceptions / errors
 - **E1: Evidência Expirada (Variante 4):** A data do documento excede os 365 dias. O Sistema cancela o upload imediatamente com o alerta visual "Evidência Expirada (>1 ano)".
+- **E2: Data futura ou inválida:** A evidência tem data futura ou formato inválido. O System rejeita o upload, apresenta o campo afetado e impede que a evidência seja usada no estado "Ready to Proceed".
 
 ---
 
-## UC-04 — Validar Regras de Consistência (Motor de Backend)
-- **Primary actor:** Sistema (Automático) / Data Steward (Manual)
-- **Supporting actors:** Motor de Regras de Qualidade
-- **Goal:** Executar a validação cruzada de 100% dos campos dependentes para garantir integridade (NFR-004).
-- **Preconditions:** Payload de dados do ativo disponível para processamento.
-- **Trigger:** Invocação automática pelo UC-01 ou solicitação de auditoria pelo Steward.
-- **Postconditions (success):** Status "Válido" retornado em menos de 500ms (NFR-002).
-- **Postconditions (failure):** Status "Inconsistente" com mapeamento detalhado de erros.
+## UC-04 — Validar Regras de Consistência
+
+- **Primary actor:** Data Steward
+- **Supporting actors:** Transition Lead (End User), Asset Database
+- **Goal:** Validar a qualidade, integridade lógica e consistência temporal dos dados antes da transição para "Ready to Proceed".
+- **Preconditions:** Existe um formulário de Intake preenchido ou parcialmente preenchido.
+- **Trigger:** O Transition Lead tenta submeter o Intake final ou o Data Steward solicita validação manual dos dados.
+- **Postconditions (success):** O Intake é considerado válido e pode avançar para "Ready to Proceed" em menos de 500ms para 95% dos pedidos.
+- **Postconditions (failure):** O Intake permanece em "Incomplete" ou "Inconsistent", com erros identificados para correção.
 - **Related requirements:** REQ-001, REQ-002, REQ-003, REQ-005, REQ-007, REQ-009, NFR-002, NFR-004, NFR-005.
 
 ### Main flow (happy path)
-1. O System valida a lógica condicional de DR: se DR="Sim", exige data; se DR="Não", proíbe data (REQ-002, REQ-003).
-2. O System extrai a data dos metadados da evidência e verifica se tem menos de 365 dias (REQ-005).
-3. O System verifica se o Hostname cumpre as regras de nomenclatura e unicidade (REQ-007).
-4. O System valida se todos os requisitos da Variante 4 foram cumpridos com sucesso.
-5. O System retorna a confirmação de integridade total (NFR-004).
+1. O Actor solicita a validação dos dados do Intake.
+2. O System verifica se os campos obrigatórios estão preenchidos (REQ-001).
+3. O System valida a regra de Disaster Recovery: se DR = "Sim", a data do último teste é obrigatória (REQ-002).
+4. O System verifica se existe contradição entre DR = "Não" e uma data de teste preenchida (REQ-003).
+5. O System verifica se a evidência operacional tem 12 meses ou menos e não tem data futura (REQ-005).
+6. O System consulta a Asset Database para confirmar que o Hostname é único (REQ-007).
+7. O System valida se todos os requisitos da Variante 4 foram cumpridos.
+8. O System retorna a confirmação de integridade total e permite a transição para "Ready to Proceed" (REQ-009, NFR-004).
 
 ### Alternative flows
-- **A1: Auditoria Preventiva:** O Data Steward corre este Caso de Uso sobre registos em estado "Draft" para gerar relatórios de qualidade de dados pendentes.
-- **A2: Timeout de Validação Externa:** Se a verificação de duplicados exceder o tempo limite, o Sistema retorna um aviso de "Validação Pendente" em vez de erro de inconsistência.
+- **A1: Auditoria Preventiva:** O Data Steward corre este caso de uso sobre registos em estado "Draft" para gerar uma lista de problemas de qualidade pendentes, sem alterar o estado final.
+- **A2: Correção após falha de validação:** O Actor corrige os campos indicados, solicita nova validação e o System reexecuta as regras de consistência.
 
 ### Exceptions / errors
-- **E1: Inconsistência Lógica (Variante 4):** O utilizador declarou não ter DR mas forneceu uma data de teste. O Sistema marca o registo como "Inconsistent" e bloqueia o estado "Ready" (REQ-003).
+- **E1: Inconsistência lógica (Variante 4):** O utilizador declarou DR = "Não" mas forneceu uma data de teste. O System marca o registo como "Inconsistent", bloqueia o estado "Ready" e identifica o campo afetado (REQ-003).
+- **E2: Duplicado encontrado:** A Asset Database indica que o Hostname já existe. O System bloqueia a validação final, apresenta erro em menos de 1 segundo e impede a transição para "Ready to Proceed" (REQ-007, NFR-005).
 
 ---
 

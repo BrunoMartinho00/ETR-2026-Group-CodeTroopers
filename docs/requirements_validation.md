@@ -8,7 +8,7 @@
 - **Reviewer**: Denivaldo Antonio
 - **Tester**: Diogo Sá
 
-## Selected requirements (10 items)
+## Selected requirements (11 items)
 - **REQ-001** (Variant impact: Yes) — Validação de Campos Obrigatórios
 - **REQ-002** (Variant impact: Yes) — Condicionalidade de Teste de DR
 - **REQ-003** (Variant impact: Yes) — Deteção de Inconsistência de DR
@@ -19,6 +19,7 @@
 - **REQ-008** (Variant impact: Yes) — Gestão de Estados (Rascunho / Draft)
 - **REQ-009** (Variant impact: Yes) — Transição para "Ready to Proceed"
 - **NFR-001** (Variant impact: No) — Log de Auditoria (Audit Trail)
+- **NFR-002** (Variant impact: Yes) — Performance de Validação
 
 ## Variant-driven validation questions (min. 3)
 1. **[Data Quality / REQ-003]**: Se o utilizador alterar o campo "Disaster Recovery" para "Não" após já ter inserido uma data, o sistema deve limpar o campo automaticamente ou apenas marcar como erro?
@@ -86,3 +87,9 @@
 - **Issues found**: Falta de definição exaustiva dos chamados "campos críticos".
 - **Proposed fix**: Listar explicitamente no documento técnico que campos como "Owner", "DR" e "Nome do Sistema" são os únicos que disparam log de auditoria.
 - **Expected evidence**: Inspeção ao ficheiro JSON de logs após edição de um ativo.
+
+### NFR-002 — Performance de Validação
+- **Status**: Valid
+- **Issues found**: O requisito define o limite de 500ms para 95% dos pedidos, mas ainda precisa de clarificar em que condições de carga essa medição é feita.
+- **Proposed fix**: Definir que a medição se aplica sob carga normal de utilização e que pedidos acima de 500ms devem ser registados para análise posterior.
+- **Expected evidence**: Medição automática do tempo de execução dos testes de validação e relatório com percentil 95.
